@@ -58,13 +58,30 @@ WHERE c.dtiniprev > "2022/04/01";
 # 7 - Selecione o código e descrição dos cursos e código dos empregados que fizeram esses cursos.
 #Considerar todos os cursos, tendo eles sido cursados por algum empregado 
 
+SELECT c.cdcurso, c.dscurso, ce.cdempregado 
+FROM cursoempregado ce 
+RIGHT JOIN curso c
+ON ce.cdcurso = c.cdcurso
+WHERE ce.cdempregado IS NOT NULL;
 
 # 8 - Selecione o código e descrição dos cursos e a quantidade de empregados que o cursou.
 
+SELECT c.cdcurso, c.dscurso, COUNT(ce.cdempregado) AS qtalunos 
+FROM curso c 
+INNER JOIN cursoempregado ce 
+ON c.cdcurso = ce.cdcurso
+GROUP BY c.cdcurso;
 
 # 9 - Mostrar os nomes dos empregados, bem como o nome dos seus gerentes, incluindo os
 #empregados que não possuem gerentes.
 
+SELECT eg.nmempregado AS Empregado, e.nmempregado AS Gerente 
+FROM empregado eg 
+LEFT JOIN empregado e 
+ON e.cdempregado = eg.cdgerente;
 
 # 10 - Buscar o código e o nome dos empregados que tem a mesma titulação que o “Paulo Cruz”.
 
+SELECT e.cdEmpregado, e.nmEmpregado, e.cdTitulo FROM empregado e
+INNER JOIN empregado et ON e.cdTitulo = et.cdTitulo AND et.nmEmpregado = 'Paulo Cruz'
+WHERE e.nmEmpregado != 'Paulo Cruz';
